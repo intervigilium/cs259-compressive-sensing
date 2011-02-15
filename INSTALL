@@ -1,0 +1,4 @@
+use the following instructions to build
+./configure
+make
+

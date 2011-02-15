@@ -1,0 +1,129 @@
+McPAT is computing the target processor...
+ 
+
+McPAT 0.6 results (current print level is 2, please increase print level to see the details in components): 
+*****************************************************************************************
+  Technology 32 nm
+  Device Type= 0
+  Interconnect metal projection= 0
+  Core clock Rate(MHz) 2000
+
+*****************************************************************************************
+Processor: 
+  Area = 34.0568 mm^2
+  TDP Dynamic = 65.7738 W
+  Subthreshold Leakage = 6.02906 W
+  Gate Leakage = 1.95682 W
+  Runtime Power = 2.37265 W
+
+  Total Cores: 
+    Area = 5.39753 mm^2
+    TDP Dynamic = 54.4102 W
+    Subthreshold Leakage = 2.92471 W
+    Gate Leakage = 1.71189 W
+    Runtime Power = 2.2565 W
+
+  Total L2s: 
+    Area = 17.7093 mm^2
+    TDP Dynamic = 1.91064 W
+    Subthreshold Leakage = 2.94696 W
+    Gate Leakage = 0.185584 W
+    Runtime Power = 0.116152 W
+
+L2
+       Area = 17.7093 mm^2
+       TDP Dynamic = 1.91064 W
+       Subthreshold Leakage = 2.94696 W
+       Gate Leakage = 0.185584 W
+       Runtime Dynamic = 0.116152 W
+
+  Total MCs: 
+    Area = 10.95 mm^2
+    TDP Dynamic = 4.7265 W
+    Subthreshold Leakage = 0.0787007 W
+    Gate Leakage = 0.0296746 W
+    Runtime Power = 1.21356e-09 W
+
+    Total energy = 2.3349e+10 uJ
+    Total cycles = 4.60452e+12
+*****************************************************************************************
+Core:
+      Area = 5.39753 mm^2
+      TDP Dynamic = 54.4102 W
+      Subthreshold Leakage = 2.92471 W
+      Gate Leakage = 1.71189 W
+      Runtime Dynamic = 2.2565 W
+
+      Instruction Fetch Unit:
+        Area = 1.63611 mm^2
+        TDP Dynamic = 8.59773 W
+        Subthreshold Leakage = 0.619592 W
+        Gate Leakage = 0.346697 W
+        Runtime Dynamic = 0.268746 W
+
+      Renaming Unit:
+        Area = 1.68562 mm^2
+        TDP Dynamic = 19.7379 W
+        Subthreshold Leakage = 0.589045 W
+        Gate Leakage = 0.349893 W
+        Runtime Dynamic = 0.831913 W
+
+      Load Store Unit:
+        Area = 0.935616 mm^2
+        TDP Dynamic = 7.91019 W
+        Subthreshold Leakage = 0.601047 W
+        Gate Leakage = 0.341057 W
+        Runtime Dynamic = 0.106945 W
+
+      Memory Management Unit:
+        Area = 0.150461 mm^2
+        TDP Dynamic = 7.68772 W
+        Subthreshold Leakage = 0.547375 W
+        Gate Leakage = 0.33349 W
+        Runtime Dynamic = 1.6753e-12 W
+
+      Execution Unit:
+        Area = 0.989722 mm^2
+        TDP Dynamic = 10.4766 W
+        Subthreshold Leakage = 0.567647 W
+        Gate Leakage = 0.340751 W
+        Runtime Dynamic = 1.0489 W
+
+*****************************************************************************************
+L2
+      Area = 17.7093 mm^2
+      TDP Dynamic = 1.91064 W
+      Subthreshold Leakage = 2.94696 W
+      Gate Leakage = 0.185584 W
+      Runtime Dynamic = 0.116152 W
+
+*****************************************************************************************
+Memory Controller:
+      Area = 5.475 mm^2
+      TDP Dynamic = 2.36325 W
+      Subthreshold Leakage = 0.0393503 W
+      Gate Leakage = 0.0148373 W
+      Runtime Dynamic = 1.21356e-09 W
+
+      Front End Engine:
+        Area = 0.334043 mm^2
+        TDP Dynamic = 0.477158 W
+        Subthreshold Leakage = 0.0302557 W
+        Gate Leakage = 0.0126228 W
+        Runtime Dynamic = 1.36271e-10 W
+
+      Transaction Engine:
+        Area = 1.84535 mm^2
+        TDP Dynamic = 1.88289 W
+        Subthreshold Leakage = 0.00326453 W
+        Gate Leakage = 0.000794895 W
+        Runtime Dynamic = 1.07547e-09 W
+
+      PHY:
+        Area = 3.29561 mm^2
+        TDP Dynamic = 3.3664 W
+        Subthreshold Leakage = 0.00583013 W
+        Gate Leakage = 0.0014196 W
+        Runtime Dynamic = 1.82777e-12 W
+
+*****************************************************************************************

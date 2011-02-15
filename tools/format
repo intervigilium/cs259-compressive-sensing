@@ -1,0 +1,8 @@
+#!/bin/sh
+echo EMTV 3D code format 1.0
+echo This tool is intended to help a human check/review formats
+echo When you use it and it misses something or detects
+echo something wrong, fix it and send a patch to the jwchen@ee.ucla.edu.cn
+
+find .  -name "*.[ch]" -exec dos2unix -d '{}' \;
+find .  -name "*.[ch]" -exec indent --indent-level2 --no-tabs --line-length280 --space-after-for --space-after-if  --space-after-while --braces-after-if-line --braces-after-func-def-line --brace-indent0 --braces-after-struct-decl-line --dont-cuddle-else '{}' \;
