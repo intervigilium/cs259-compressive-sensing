@@ -13,19 +13,15 @@ OBJDIR= obj
 LIBDIR= lib
 PAPIDIR= /mnt/jc5/CS259/papi
 
-ADDSRCDIR=
-ADDINCDIR=
-
 LDFLAGS+= -L/mnt/jc5/CS259/papi/ -lutil_papi -lpapi
-FLAGS= $(CFLAGS) -I$(PAPIDIR) -I$(INCDIR) -I$(ADDINCDIR)
+FLAGS= $(CFLAGS) -I$(PAPIDIR) -I$(INCDIR)
 SUFFIX=
-FLAGS+= -ffloat-store -Wall
+FLAGS+= -g -pg -ffloat-store -Wall
 
 OBJSUF= .o$(SUFFIX)
 
 SRC=    $(wildcard $(SRCDIR)/*.c)
-ADDSRC= $(wildcard $(ADDSRCDIR)/*.c)
-OBJ=    $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o$(SUFFIX)) $(ADDSRC:$(ADDSRCDIR)/%.c=$(OBJDIR)/%.o$(SUFFIX))
+OBJ=    $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o$(SUFFIX))
 BIN=    $(BINDIR)/$(NAME)$(SUFFIX)
 LIB=    $(LIBDIR)/libemtv3d.a
 
@@ -67,9 +63,4 @@ depend:
 
 $(OBJDIR)/%.o$(SUFFIX): $(SRCDIR)/%.c
 	@echo 'compiling object file "$@" ...'
-	@$(CC) -c -o $@ $(FLAGS) $<
-
-$(OBJDIR)/%.o$(SUFFIX): $(ADDSRCDIR)/%.c
-	@echo 'compiling object file "$@" ...'
-	@$(CC) -c -o $@ $(FLAGS) $<
-
+	@$(CC) -c $(FLAGS) -o $@ $<
