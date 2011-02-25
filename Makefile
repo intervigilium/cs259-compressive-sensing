@@ -7,16 +7,17 @@ NAME=  emtv3d
 include config.mak
 
 BINDIR= bin
-INCDIR= src 
+INCDIR= src
 SRCDIR= src
 OBJDIR= obj
 LIBDIR= lib
 PAPIDIR= /mnt/jc5/CS259/papi
 
-LDFLAGS+= -L/mnt/jc5/CS259/papi/ -lutil_papi -lpapi
-FLAGS= $(CFLAGS) -I$(PAPIDIR) -I$(INCDIR)
+CFLAGS+= -g -pg -ffloat-store -Wall
+LDFLAGS+= -L$(PAPIDIR) -lpapi -lutil_papi
+INCFLAGS= -I$(PAPIDIR) -I$(INCDIR)
+
 SUFFIX=
-FLAGS+= -g -pg -ffloat-store -Wall
 
 OBJSUF= .o$(SUFFIX)
 
@@ -47,7 +48,7 @@ tags:
 
 bin:    $(OBJ)
 	@echo 'creating binary "$(BIN)"'
-	@$(CC) -o $(BIN) $(OBJ) $(FLAGS) $(LDFLAGS)
+	@$(CC) -o $(BIN) $(OBJ) $(CFLAGS) $(INCFLAGS) $(LDFLAGS)
 	@echo '... done'
 	@echo
 
@@ -63,4 +64,4 @@ depend:
 
 $(OBJDIR)/%.o$(SUFFIX): $(SRCDIR)/%.c
 	@echo 'compiling object file "$@" ...'
-	@$(CC) -c $(FLAGS) -o $@ $<
+	@$(CC) -c $(CFLAGS) -o $@ $<
