@@ -13,7 +13,7 @@ OBJDIR= obj
 LIBDIR= lib
 PAPIDIR= /mnt/jc5/CS259/papi
 
-CFLAGS+= -g -pg -ffloat-store -Wall
+CFLAGS+= -g -pg -ffloat-store
 LDFLAGS+= -L$(PAPIDIR) -lpapi -lutil_papi
 INCFLAGS= -I$(PAPIDIR) -I$(INCDIR)
 
@@ -48,7 +48,7 @@ tags:
 
 bin:    $(OBJ)
 	@echo 'creating binary "$(BIN)"'
-	@$(CC) -o $(BIN) $(OBJ) $(CFLAGS) $(INCFLAGS) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(INCFLAGS) $(OBJ) -o $(BIN) $(LDFLAGS)
 	@echo '... done'
 	@echo
 
@@ -64,4 +64,4 @@ depend:
 
 $(OBJDIR)/%.o$(SUFFIX): $(SRCDIR)/%.c
 	@echo 'compiling object file "$@" ...'
-	@$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
