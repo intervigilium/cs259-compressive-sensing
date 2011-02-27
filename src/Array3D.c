@@ -56,231 +56,239 @@ static void sizeCheck (int Msize1, int Msize2, int Nsize1, int Nsize2, int Psize
 */
 
 
-int Array3D_malloc(Array3D *array3d, int m, int n, int p)
+int Array3D_malloc(Array3D * array3d, int m, int n, int p)
 {
-   DataType *dataPtr=NULL; // data pointer
-   int index1Size;    // coordinate 1 size
-   int index2Size;    // coordinate 2 size
-   int index3Size;    // coordinate 3 size
+    DataType *dataPtr = NULL;	// data pointer
+    int index1Size;		// coordinate 1 size
+    int index2Size;		// coordinate 2 size
+    int index3Size;		// coordinate 3 size
 
-   array3d->index1Size = index1Size = m;
-   array3d->index2Size = index2Size = n;
-   array3d->index3Size = index3Size = p;
+    array3d->index1Size = index1Size = m;
+    array3d->index2Size = index2Size = n;
+    array3d->index3Size = index3Size = p;
 
-   if ((index1Size != 0) && (index2Size != 0) && (index3Size != 0))
-    {
-      dataPtr = (DataType*) malloc(m * n * p * sizeof(DataType));
+    if ((index1Size != 0) && (index2Size != 0) && (index3Size != 0)) {
+	dataPtr = (DataType *) malloc(m * n * p * sizeof(DataType));
+    } else {
+	printf("Array3D_malloc: use zero size and malloc failed\n");
+	return -1;
     }
-   else
-   {
-    printf("Array3D_malloc: use zero size and malloc failed\n");
-    return -1;
-   }
 
-   //init the data to 0.0 
-    memset(dataPtr, 0, m * n * p * sizeof(DataType) );
-   //for (i = 0; i < index1Size * index2Size * index3Size; i++)
-   //{
-   //   dataPtr[i] = 0.0;
-   //}
+    //init the data to 0.0 
+    memset(dataPtr, 0, m * n * p * sizeof(DataType));
+    //for (i = 0; i < index1Size * index2Size * index3Size; i++)
+    //{
+    //   dataPtr[i] = 0.0;
+    //}
 
 
-   array3d->dataPtr = dataPtr;
+    array3d->dataPtr = dataPtr;
 
-   return 0;
+    return 0;
 };
 
-int Array3D_free(Array3D *array3d)
+int Array3D_free(Array3D * array3d)
 {
 
-   if(array3d->dataPtr!=NULL)
-     free(array3d->dataPtr);
+    if (array3d->dataPtr != NULL)
+	free(array3d->dataPtr);
 
-   return 0;
+    return 0;
 };
 
 
-void Array3D_initialize_value (DataType *dataPtr, DataType value, int m, int n, int p)
+void Array3D_initialize_value(DataType * dataPtr, DataType value, int m,
+			      int n, int p)
 {
-   int index1Size;    // coordinate 1 size
-   int index2Size;    // coordinate 2 size
-   int index3Size;    // coordinate 3 size
-   int i;
+    int index1Size;		// coordinate 1 size
+    int index2Size;		// coordinate 2 size
+    int index3Size;		// coordinate 3 size
+    int i;
 
-   index1Size = m;
-   index2Size = n;
-   index3Size = p;
+    index1Size = m;
+    index2Size = n;
+    index3Size = p;
 
-   for (i = 0; i < index1Size * index2Size * index3Size; i++)
-   {
-      dataPtr[i] = value;
-   }
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr[i] = value;
+    }
 };
 
-void Array3D_initialize_array (DataType *dataPtr, DataType *dataPtrSrc, int m, int n, int p)
+void Array3D_initialize_array(DataType * dataPtr, DataType * dataPtrSrc,
+			      int m, int n, int p)
 {
-   int index1Size;    // coordinate 1 size
-   int index2Size;    // coordinate 2 size
-   int index3Size;    // coordinate 3 size
-   int i;
+    int index1Size;		// coordinate 1 size
+    int index2Size;		// coordinate 2 size
+    int index3Size;		// coordinate 3 size
+    int i;
 
-   index1Size = m;
-   index2Size = n;
-   index3Size = p;
+    index1Size = m;
+    index2Size = n;
+    index3Size = p;
 
-   for (i = 0; i < index1Size * index2Size * index3Size; i++)
-   {
-      dataPtr[i] = dataPtrSrc[i];
-   }
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr[i] = dataPtrSrc[i];
+    }
 };
 
 
-DataType Array3D_getData(DataType *dataPtr, int index1Size,int index2Size,int index3Size,int i1,int i2,int i3)
+DataType Array3D_getData(DataType * dataPtr, int index1Size,
+			 int index2Size, int index3Size, int i1, int i2,
+			 int i3)
 {
-   return *(dataPtr + i3 + index3Size *(i2 + i1 * index2Size));
+    return *(dataPtr + i3 + index3Size * (i2 + i1 * index2Size));
 }
 
-DataType *Array3D_getAdd(DataType *dataPtr, int index1Size,int index2Size,int index3Size,int i1,int i2,int i3)
+DataType *Array3D_getAdd(DataType * dataPtr, int index1Size,
+			 int index2Size, int index3Size, int i1, int i2,
+			 int i3)
 {
-   return dataPtr + i3 + index3Size *(i2 + i1 * index2Size);
+    return dataPtr + i3 + index3Size * (i2 + i1 * index2Size);
 }
 
 
-DataType *Array3D_add(DataType *dataPtr1, DataType *dataPtr2, int index1Size, int index2Size, int index3Size)
+DataType *Array3D_add(DataType * dataPtr1, DataType * dataPtr2,
+		      int index1Size, int index2Size, int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dataPtr1[i] += dataPtr2[i];
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr1[i] += dataPtr2[i];
     }
     return dataPtr1;
 }
 
-DataType *Array3D_sub(DataType *dataPtr1, DataType *dataPtr2, int index1Size, int index2Size, int index3Size)
+DataType *Array3D_sub(DataType * dataPtr1, DataType * dataPtr2,
+		      int index1Size, int index2Size, int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dataPtr1[i] -= dataPtr2[i];
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr1[i] -= dataPtr2[i];
     }
     return dataPtr1;
 }
 
-DataType *Array3D_mul(DataType *dataPtr1, DataType *dataPtr2, int index1Size, int index2Size, int index3Size)
+DataType *Array3D_mul(DataType * dataPtr1, DataType * dataPtr2,
+		      int index1Size, int index2Size, int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dataPtr1[i] = dataPtr1[i] * dataPtr2[i];
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr1[i] = dataPtr1[i] * dataPtr2[i];
     }
     return dataPtr1;
 }
 
-DataType *Array3D_div(DataType *dataPtr1, DataType *dataPtr2, int index1Size, int index2Size, int index3Size)
+DataType *Array3D_div(DataType * dataPtr1, DataType * dataPtr2,
+		      int index1Size, int index2Size, int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dataPtr1[i] = dataPtr1[i] / dataPtr2[i];
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr1[i] = dataPtr1[i] / dataPtr2[i];
     }
     return dataPtr1;
 }
 
-int Array3D_copy(DataType *dstPtr1, DataType *srcPtr2, int index1Size, int index2Size, int index3Size)
+int Array3D_copy(DataType * dstPtr1, DataType * srcPtr2, int index1Size,
+		 int index2Size, int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dstPtr1[i] = srcPtr2[i];
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dstPtr1[i] = srcPtr2[i];
     }
     return 0;
 }
 
 
 
-void Array3D_add_value(Array3D *array3d, DataType value, int i1, int i2, int i3)
+void Array3D_add_value(Array3D * array3d, DataType value, int i1, int i2,
+		       int i3)
 {
-     int index2Size = array3d->index2Size;
-     int index3Size = array3d->index3Size;
+    int index2Size = array3d->index2Size;
+    int index3Size = array3d->index3Size;
 
-     *(array3d->dataPtr + i3 + index3Size *(i2 + i1 * index2Size)) += value; ;
+    *(array3d->dataPtr + i3 + index3Size * (i2 + i1 * index2Size)) +=
+	value;;
 }
 
-void Array3D_sub_value(Array3D *array3d, DataType value, int i1, int i2, int i3)
+void Array3D_sub_value(Array3D * array3d, DataType value, int i1, int i2,
+		       int i3)
 {
-     int index2Size = array3d->index2Size;
-     int index3Size = array3d->index3Size;
+    int index2Size = array3d->index2Size;
+    int index3Size = array3d->index3Size;
 
-     *(array3d->dataPtr + i3 + index3Size *(i2 + i1 * index2Size)) -= value; ;
+    *(array3d->dataPtr + i3 + index3Size * (i2 + i1 * index2Size)) -=
+	value;;
 }
 
-void Array3D_mul_value(Array3D *array3d, DataType value, int i1, int i2, int i3)
+void Array3D_mul_value(Array3D * array3d, DataType value, int i1, int i2,
+		       int i3)
 {
-     int index2Size = array3d->index2Size;
-     int index3Size = array3d->index3Size;
+    int index2Size = array3d->index2Size;
+    int index3Size = array3d->index3Size;
 
-     *(array3d->dataPtr + i3 + index3Size *(i2 + i1 * index2Size)) *= value; ;
+    *(array3d->dataPtr + i3 + index3Size * (i2 + i1 * index2Size)) *=
+	value;;
 }
 
-void Array3D_div_value(Array3D *array3d, DataType value, int i1, int i2, int i3)
+void Array3D_div_value(Array3D * array3d, DataType value, int i1, int i2,
+		       int i3)
 {
-     int index2Size = array3d->index2Size;
-     int index3Size = array3d->index3Size;
+    int index2Size = array3d->index2Size;
+    int index3Size = array3d->index3Size;
 
-     *(array3d->dataPtr + i3 + index3Size *(i2 + i1 * index2Size)) /= value; ;
+    *(array3d->dataPtr + i3 +
+      index3Size * (i2 + i1 * index2Size)) /= value;;
 }
 
-DataType *Array3D_all_add_1value(DataType *dataPtr1, DataType value, int index1Size, int index2Size, int index3Size)
+DataType *Array3D_all_add_1value(DataType * dataPtr1, DataType value,
+				 int index1Size, int index2Size,
+				 int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dataPtr1[i] += value;
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr1[i] += value;
     }
     return dataPtr1;
 }
 
-DataType *Array3D_all_sub_1value(DataType *dataPtr1, DataType value, int index1Size, int index2Size, int index3Size)
+DataType *Array3D_all_sub_1value(DataType * dataPtr1, DataType value,
+				 int index1Size, int index2Size,
+				 int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dataPtr1[i] -= value;
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr1[i] -= value;
     }
     return dataPtr1;
 }
 
-DataType *Array3D_all_mul_1value(DataType *dataPtr1, DataType value, int index1Size, int index2Size, int index3Size)
+DataType *Array3D_all_mul_1value(DataType * dataPtr1, DataType value,
+				 int index1Size, int index2Size,
+				 int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dataPtr1[i] = dataPtr1[i] * value;
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr1[i] = dataPtr1[i] * value;
     }
     return dataPtr1;
 }
 
-DataType *Array3D_all_div_1value(DataType *dataPtr1, DataType value, int index1Size, int index2Size, int index3Size)
+DataType *Array3D_all_div_1value(DataType * dataPtr1, DataType value,
+				 int index1Size, int index2Size,
+				 int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dataPtr1[i] = dataPtr1[i] / value;
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dataPtr1[i] = dataPtr1[i] / value;
     }
     return dataPtr1;
 }
 
-int Array3D_all_set_1value(DataType *dstPtr1, DataType value, int index1Size, int index2Size, int index3Size)
+int Array3D_all_set_1value(DataType * dstPtr1, DataType value,
+			   int index1Size, int index2Size, int index3Size)
 {
     int i;
-    for (i = 0; i < index1Size * index2Size * index3Size; i++)
-    {
-      dstPtr1[i] = value;
+    for (i = 0; i < index1Size * index2Size * index3Size; i++) {
+	dstPtr1[i] = value;
     }
     return 0;
 }
-
-
-
-
-

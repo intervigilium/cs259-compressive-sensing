@@ -16,10 +16,8 @@
 #include <math.h>
 #include "Array3D.h"
 
-void TVupdate (Array3D *image, 
-               Array3D *sumA,
-               DataType alpha,
-               int max_iter);
+void TVupdate(Array3D * image,
+	      Array3D * sumA, DataType alpha, int max_iter);
 
 
 #endif

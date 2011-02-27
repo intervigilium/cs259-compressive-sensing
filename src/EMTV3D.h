@@ -14,16 +14,16 @@
 #define __EMTV3D_H__
 
 #ifdef _MSC_VER
-  typedef __int64 int64_t;
+typedef __int64 int64_t;
 #else
-  #include <stdint.h>		// Use the C99 official header
+#include <stdint.h>		// Use the C99 official header
 #endif
 
-int64_t emtv3d_timer_us( void );
-int64_t emtv3d_timer_s( void ); 
-void readImgArray3D(char* in_file, Array3D *image);
-void writeImgArray3D(char* out_file, Array3D *image);
-void writeImgArray3DWithIndex(char* out_file, Array3D *image);
-void CompareVector(DataType *data0, DataType *data1, int size);
+int64_t emtv3d_timer_us(void);
+int64_t emtv3d_timer_s(void);
+void readImgArray3D(char *in_file, Array3D * image);
+void writeImgArray3D(char *out_file, Array3D * image);
+void writeImgArray3DWithIndex(char *out_file, Array3D * image);
+void CompareVector(DataType * data0, DataType * data1, int size);
 
 #endif

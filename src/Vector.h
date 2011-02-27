@@ -14,24 +14,21 @@
 
 #include "define.h"
 
-typedef struct _Vector3D
-{
-  DataType x; 
-  DataType y;
-  DataType z;
-}Vector3D;
+typedef struct _Vector3D {
+    DataType x;
+    DataType y;
+    DataType z;
+} Vector3D;
 
-typedef struct _Vector3DINT
-{
-  int x; 
-  int y;
-  int z;
-}Vector3DInt;
+typedef struct _Vector3DINT {
+    int x;
+    int y;
+    int z;
+} Vector3DInt;
 
-void Vector3D_Set(Vector3D *vec, DataType x, DataType y, DataType z);
-void Vector3D_Sub(Vector3D *vecdst, Vector3D *vec0, Vector3D *vec1);
-void Vector3D_Add(Vector3D *vecdst, Vector3D *vec0, Vector3D *vec1);
-DataType Vector3D_Dot(Vector3D *vec0, Vector3D *vec1);
+void Vector3D_Set(Vector3D * vec, DataType x, DataType y, DataType z);
+void Vector3D_Sub(Vector3D * vecdst, Vector3D * vec0, Vector3D * vec1);
+void Vector3D_Add(Vector3D * vecdst, Vector3D * vec0, Vector3D * vec1);
+DataType Vector3D_Dot(Vector3D * vec0, Vector3D * vec1);
 
 #endif
-
