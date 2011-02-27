@@ -2,5 +2,6 @@ data/*
 obj/*
 bin/emtv3d
 *.out
-config.*
+config.h
+config.mak
 tags
