@@ -1,5 +1,6 @@
 data/*
 obj/*
 bin/emtv3d
+*.out
 config.*
 tags
