@@ -53,5 +53,4 @@
 #define LAMBDA_Y(j, y_s, y_d, L) (L*((DataType)j-y_s)/(y_d-y_s))
 #define LAMBDA_Z(k, z_s, z_d, L) (L*((DataType)k-z_s)/(z_d-z_s))
 
-
 #endif

@@ -26,10 +26,10 @@
 #define Addr(dataPtr, index1Size, index2Size, index3Size, i1, i2, i3) ((dataPtr + i3 + index3Size *(i2 + i1 * index2Size)))
 
 typedef struct _Array3D {
-    DataType *dataPtr;		// data pointer
-    int index1Size;		// coordinate 1 size
-    int index2Size;		// coordinate 2 size
-    int index3Size;		// coordinate 3 size
+	DataType *dataPtr;	// data pointer
+	int index1Size;		// coordinate 1 size
+	int index2Size;		// coordinate 2 size
+	int index3Size;		// coordinate 3 size
 } Array3D;
 
 int Array3D_malloc(Array3D * array3d, int m, int n, int p);
@@ -52,7 +52,6 @@ DataType *Array3D_mul(DataType * dataPtr1, DataType * dataPtr2,
 		      int index1Size, int index2Size, int index3Size);
 DataType *Array3D_div(DataType * dataPtr1, DataType * dataPtr2,
 		      int index1Size, int index2Size, int index3Size);
-
 
 void Array3D_add_value(Array3D * array3d, DataType value, int i1, int i2,
 		       int i3);

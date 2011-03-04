@@ -39,8 +39,7 @@ void Forward_Projection(Array3D * image,
 			int q,
 			DataType ss,
 			DataType d,
-			DataType dtheta,
-			DataType ssz, int qz, Array3D * sino);
+			DataType dtheta, DataType ssz, int qz, Array3D * sino);
 
 void Backward_Projection(Array3D * image,
 			 Array3D * image_denote,
@@ -48,8 +47,7 @@ void Backward_Projection(Array3D * image,
 			 int q,
 			 DataType ss,
 			 DataType d,
-			 DataType dtheta,
-			 DataType ssz, int qz, Array3D * sino);
+			 DataType dtheta, DataType ssz, int qz, Array3D * sino);
 
 void Backward_Projection2(Array3D * image,	//output 
 			  Array3D * image_denote,
@@ -91,9 +89,7 @@ void Backward_Projection_Column(Vector3D * source,
 				Array3D * sino,
 				Array3D * image, Array3D * image_denote);
 
-
-void Find_Zero_Pixels(Vector3D * source,
-		      Vector3D * detector, Array3D * image);
+void Find_Zero_Pixels(Vector3D * source, Vector3D * detector, Array3D * image);
 
 void Initialization(Array3D * image,
 		    DataType D,

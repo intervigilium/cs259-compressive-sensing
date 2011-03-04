@@ -23,8 +23,6 @@ void EMupdate(Array3D * sino,
 	      int max_iter,
 	      DataType D,
 	      int q,
-	      DataType ss,
-	      DataType d, DataType dtheta, DataType ssz, int qz);
-
+	      DataType ss, DataType d, DataType dtheta, DataType ssz, int qz);
 
 #endif

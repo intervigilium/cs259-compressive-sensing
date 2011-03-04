@@ -15,15 +15,15 @@
 #include "define.h"
 
 typedef struct _Vector3D {
-    DataType x;
-    DataType y;
-    DataType z;
+	DataType x;
+	DataType y;
+	DataType z;
 } Vector3D;
 
 typedef struct _Vector3DINT {
-    int x;
-    int y;
-    int z;
+	int x;
+	int y;
+	int z;
 } Vector3DInt;
 
 void Vector3D_Set(Vector3D * vec, DataType x, DataType y, DataType z);
