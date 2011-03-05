@@ -69,9 +69,9 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 	DataType Tx, Ty, Tz;
 	DataType length;
 
-	//get direction
+	/* get direction */
 	Vector3D_Sub(&Ray_Dir, detector, source);
-	//get ray length
+	/* get ray length */
 	L = Vector3D_Dot(&Ray_Dir, &Ray_Dir);
 	L = SQRT(L);
 
@@ -83,13 +83,13 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 	absvalue_y = ABS_VALUE(Ray_Dir.y);
 	absvalue_z = ABS_VALUE(Ray_Dir.z);
 
-	//get x=1 Lx Ly Lz 
+	/* get x=1 Lx Ly Lz */
 	Len.x = (DataType) ((absvalue_x > 1.e-4) ? (L / absvalue_x) : 1.e6);
 	Len.y = (DataType) ((absvalue_y > 1.e-4) ? (L / absvalue_y) : 1.e6);
 	Len.z = (DataType) ((absvalue_z > 1.e-4) ? (L / absvalue_z) : 1.e6);
 
-	//get the entry and exit point between Ray & Image   
-	//distance between source and entry point
+	/* get the entry and exit point between Ray & Image
+	 * distance between source and entry point */
 	lambda_min = MAX(MAX(0.0,
 			     MIN(LAMBDA_X(0, source->x, detector->x, L),
 				 LAMBDA_X(N_x, source->x, detector->x, L))
@@ -102,7 +102,7 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 			 )
 	    );
 
-	//distance between source and exit point
+	/* distance between source and exit point */
 	lambda_max = MIN(MIN(L,
 			     MAX(LAMBDA_X(0, source->x, detector->x, L),
 				 LAMBDA_X(N_x, source->x, detector->x, L))
@@ -115,11 +115,11 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 			 )
 	    );
 
-	//no intersection between Ray & Image
+	/* no intersection between Ray & Image */
 	if (lambda_min >= lambda_max)
 		return sino;
 
-	//get the position of entry point
+	/* get the position of entry point */
 	x_min = source->x + lambda_min * Ray_Dir.x / L;
 	y_min = source->y + lambda_min * Ray_Dir.y / L;
 	z_min = source->z + lambda_min * Ray_Dir.z / L;
@@ -128,17 +128,16 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 	y_min = (y_min) > 0 ? y_min : 0;
 	z_min = (z_min) > 0 ? z_min : 0;
 
-	//v current pixel
-	//u next pixel 
+	/* v current pixel, u next pixel */
 	if (ABS_VALUE(z_min - (int)(z_min + 0.5)) < 1.e-4) {
-		//integer pixel 
+		/* integer pixel */
 		v.z = (int)(z_min + 0.5);
 		u.z = v.z + signz;
 		index = 3;
 		if (Ray_Dir.z < 0.0)
 			v.z -= 1;
 	} else {
-		//frac pixel 
+		/* frac pixel */
 		v.z = (int)(z_min);
 		if (Ray_Dir.z < 0.0)
 			u.z = (int)(z_min);
@@ -174,8 +173,8 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 			u.x = (int)(x_min + 1);
 	}
 
-	//set the beginning pixel
-	//lambda.x .y .z are the distance between source point and next ray point 
+	/* set the beginning pixel
+	 * lambda.x .y .z are the distance between source point and next ray point */
 	lambda_0 = lambda_min;
 	lambda.x =
 	    (absvalue_x < 1e-4) ? 1e6 : LAMBDA_X(u.x, source->x, detector->x,
@@ -187,17 +186,18 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 	    (absvalue_z < 1e-4) ? 1e6 : LAMBDA_Z(u.z, source->z, detector->z,
 						 L);
 
-	//the main loop
-	//large distance on X axis  
+	/* the main loop
+	 * large distance on X axis */
 	if (ABS_VALUE(Ray_Dir.x) > ABS_VALUE(Ray_Dir.y)) {
-		if (index == 1)	//intersection with x 
-		{
-			//align the x axis without intersection of y and z 
+		/* intersection with x */
+		if (index == 1) {
+			/* align the x axis without intersection of y and z */
 			if (MIN(lambda.z, lambda.y) > lambda_max) {
 				while (1) {
 					sino +=
 					    ARRAY3DData(image, v.x, v.y, v.z);
-					DBG2(writeline(v.x, v.y, v.z, Len.x);)
+					DBG2(writeline(v.x, v.y, v.z, Len.x);
+					    )
 
 					    v.x += signx;
 
@@ -205,24 +205,25 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						return sino * Len.x;
 				}
 			}
-			//cross z firstly  
+			/* cross z firstly */
 			if (lambda.z < lambda.y) {
 				Ty = lambda.y - lambda.z;
 				Tz = lambda.z - lambda_0;
 				Tx = lambda.x - lambda_0;
 
-				//intersection Z firstly
+				/* intersection Z firstly */
 				if (Tz < Tx) {
 					length = Tz;
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
 
 					    Tx -= Tz;
 					Tz = Len.z;
 
-					//update v.z 
+					/* update v.z */
 					v.z += signz;
 
 					if (v.z >= N_z || v.z < 0)
@@ -232,24 +233,26 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
 
 					    Tz -= Tx;
 					Tx = Len.x;
-					//update v.x 
+					/* update v.x */
 					v.x += signx;
-					//exit image
+					/* exit image */
 					if (v.x >= N_x || v.x < 0)
 						return sino;
 
-					//intersection with z 
+					/* intersection with z */
 					while (Tz >= Tx) {
 						length = Tx;
 						sino +=
 						    ARRAY3DData(image, v.x, v.y,
 								v.z) * length;
 						DBG2(writeline
-						     (v.x, v.y, v.z, length);)
+						     (v.x, v.y, v.z, length);
+						    )
 
 						    Tz -= Tx;
 						v.x += signx;
@@ -261,7 +264,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Tz;
 					Tz = Len.z;
 					v.z += signz;
@@ -278,7 +284,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Ty;
 					Ty = Len.y;
 					v.y += signy;
@@ -289,7 +298,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tx;
 					Tx = Len.x;
 					v.x += signx;
@@ -301,8 +313,11 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						sino +=
 						    ARRAY3DData(image, v.x, v.y,
 								v.z) * length;
+
 						DBG2(writeline
-						     (v.x, v.y, v.z, length);)
+						     (v.x, v.y, v.z, length);
+						    )
+
 						    Ty -= Tx;
 						v.x += signx;
 						if (v.x >= N_x || v.x < 0)
@@ -313,7 +328,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Ty;
 					Ty = Len.y;
 					v.y += signy;
@@ -321,29 +339,32 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						return sino;
 				}
 			}
-		} else if (index == 2)	//intersection with y
-		{
+		} else if (index == 2) {
+			/* intersection with y */
 			Ty = Len.y;
 			Tz = lambda.z - lambda_0;
 			Tx = lambda.x - lambda_0;
-		} else		//intersection with z
-		{
+		} else {
+			/* intersection with z */
 			Tz = Len.z;
 			Ty = lambda.y - lambda_0;
 			Tx = lambda.x - lambda_0;
 		}
 
-		//intersection begin with Y, Z 
+		/* intersection begin with Y, Z */
 		while (1) {
-			if (Tz < Ty)	//intersection with Z firstly
-			{
+			if (Tz < Ty) {
+				/* intersection with Z firstly */
 				Ty -= Tz;
 				if (Tz < Tx) {
 					length = Tz;
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Tz;
 					Tz = Len.z;
 					v.z += signz;
@@ -354,7 +375,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tz -= Tx;
 					Tx = Len.x;
 					v.x += signx;
@@ -366,8 +390,11 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						sino +=
 						    ARRAY3DData(image, v.x, v.y,
 								v.z) * length;
+
 						DBG2(writeline
-						     (v.x, v.y, v.z, length);)
+						     (v.x, v.y, v.z, length);
+						    )
+
 						    Tz -= Tx;
 						v.x += signx;
 						if (v.x >= N_x || v.x < 0)
@@ -377,22 +404,28 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Tz;
 					Tz = Len.z;
 					v.z += signz;
 					if (v.z >= N_z || v.z < 0)
 						return sino;
 				}
-			} else	//intersection with Y firstly
-			{
+			} else {
+				/* intersection with Y firstly */
 				Tz -= Ty;
 				if (Ty < Tx) {
 					length = Ty;
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Ty;
 					Ty = Len.y;
 					v.y += signy;
@@ -403,7 +436,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tx;
 					Tx = Len.x;
 					v.x += signx;
@@ -415,8 +451,11 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						sino +=
 						    ARRAY3DData(image, v.x, v.y,
 								v.z) * length;
+
 						DBG2(writeline
-						     (v.x, v.y, v.z, length);)
+						     (v.x, v.y, v.z, length);
+						    )
+
 						    Ty -= Tx;
 						v.x += signx;
 						if (v.x >= N_x || v.x < 0)
@@ -427,7 +466,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Ty;
 					Ty = Len.y;
 					v.y += signy;
@@ -436,15 +478,18 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 				}
 			}
 		}
-	} else			//large distance on Y axis  
-	{
-		//intersection with y integer pixel 
+	} else {
+		/* large distance on Y axis */
+		/* intersection with y integer pixel */
 		if (index == 2) {
 			if (MIN(lambda.z, lambda.x) > lambda_max) {
 				while (1) {
 					sino +=
 					    ARRAY3DData(image, v.x, v.y, v.z);
-					DBG2(writeline(v.x, v.y, v.z, Len.y);)
+
+					DBG2(writeline(v.x, v.y, v.z, Len.y);
+					    )
+
 					    v.y += signy;
 					if (v.y >= N_y || v.y < 0)
 						return sino * Len.y;
@@ -459,7 +504,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tz;
 					Tz = Len.z;
 					v.z += signz;
@@ -470,7 +518,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tz -= Ty;
 					Ty = Len.y;
 					v.y += signy;
@@ -481,8 +532,11 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						sino +=
 						    ARRAY3DData(image, v.x, v.y,
 								v.z) * length;
+
 						DBG2(writeline
-						     (v.x, v.y, v.z, length);)
+						     (v.x, v.y, v.z, length);
+						    )
+
 						    Tz -= Ty;
 						v.y += signy;
 						if (v.y >= N_y || v.y < 0)
@@ -492,7 +546,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tz;
 					Tz = Len.z;
 					v.z += signz;
@@ -508,7 +565,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tx;
 					Tx = Len.x;
 					v.x += signx;
@@ -519,7 +579,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Ty;
 					Ty = Len.y;
 					v.y += signy;
@@ -530,8 +593,11 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						sino +=
 						    ARRAY3DData(image, v.x, v.y,
 								v.z) * length;
+
 						DBG2(writeline
-						     (v.x, v.y, v.z, length);)
+						     (v.x, v.y, v.z, length);
+						    )
+
 						    Tx -= Ty;
 						v.y += signy;
 						if (v.y >= N_y || v.y < 0)
@@ -541,7 +607,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tx;
 					Tx = Len.x;
 					v.x += signx;
@@ -567,7 +636,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tz;
 					Tz = Len.z;
 					v.z += signz;
@@ -578,7 +650,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tz -= Ty;
 					Ty = Len.y;
 					v.y += signy;
@@ -589,8 +664,11 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						sino +=
 						    ARRAY3DData(image, v.x, v.y,
 								v.z) * length;
+
 						DBG2(writeline
-						     (v.x, v.y, v.z, length);)
+						     (v.x, v.y, v.z, length);
+						    )
+
 						    Tz -= Ty;
 						v.y += signy;
 						if (v.y >= N_y || v.y < 0)
@@ -600,7 +678,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tz;
 					Tz = Len.z;
 					v.z += signz;
@@ -614,7 +695,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tx;
 					Tx = Len.x;
 					v.x += signx;
@@ -625,7 +709,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Tx -= Ty;
 					Ty = Len.y;
 					v.y += signy;
@@ -637,8 +724,11 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 						sino +=
 						    ARRAY3DData(image, v.x, v.y,
 								v.z) * length;
+
 						DBG2(writeline
-						     (v.x, v.y, v.z, length);)
+						     (v.x, v.y, v.z, length);
+						    )
+
 						    Tx -= Ty;
 						v.y += signy;
 						if (v.y >= N_y || v.y < 0)
@@ -649,7 +739,10 @@ DataType Ray_Tracer_Forward(Vector3D * source,
 					sino +=
 					    ARRAY3DData(image, v.x, v.y,
 							v.z) * length;
-					DBG2(writeline(v.x, v.y, v.z, length);)
+
+					DBG2(writeline(v.x, v.y, v.z, length);
+					    )
+
 					    Ty -= Tx;
 					Tx = Len.x;
 					v.x += signx;
@@ -771,7 +864,8 @@ void Forward_Projection(Array3D * image, DataType D, int q, DataType ss, DataTyp
 			}
 		}
 		thetaS += dtheta2;
-		DBG1(fprintf(stderr, "Forward_Projection %d \r", i);)
+		DBG1(fprintf(stderr, "Forward_Projection %d \r", i);
+		    )
 	}
 }
 
@@ -1499,7 +1593,8 @@ void Backward_Projection(Array3D * image,	//output
 		}
 		thetaS += dtheta2;
 
-		DBG1(fprintf(stderr, "Backward_Projection %d \r", i);)
+		DBG1(fprintf(stderr, "Backward_Projection %d \r", i);
+		    )
 	}
 }
 
