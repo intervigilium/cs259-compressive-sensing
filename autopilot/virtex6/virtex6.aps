@@ -1,0 +1,44 @@
+<solution AutoPilot="com.autoesl.autopilot.solution">
+    <targetInfo>
+        <TargetInfo value="xc6vlx240t:ff1156:-1"/>
+    </targetInfo>
+    <libraryList>
+        <library value="xilinx/virtex6/virtex6"/>
+        <library value="xilinx/virtex6/virtex6_fpv5"/>
+    </libraryList>
+    <clockList>
+        <clock default="false" name="-" period="10" uncertainty="1.25"/>
+    </clockList>
+    <config>
+        <config_autosim O="0" setup="0" trace_level="none"/>
+    </config>
+    <UIConfigurations>
+        <UIAutosynConf alteraLibrarySpeedFilter="any" hideTrivialOp="true">
+            <Platform>xilinx/virtex6/virtex6</Platform>
+            <Platform>xilinx/virtex6/virtex6_fpv5</Platform>
+            <customLibs/>
+        </UIAutosynConf>
+        <UIAutoMGConf AskAgain="false" Export="true" Xil_CoreGen="true" Xil_ISE="false">
+            <UIAutoMGImpl add_io_buffers="false" altera_register_duplication="off" op_effort="high" op_goal="speed" par_effort="high" register_balancing="no" register_duplication="false" register_retiming="off" setup="0" synthesis_combo_logic="off" synthesis_effort="normal" virtual_pins="off">
+                <RTLs>
+                    <Verilog selection="false" tool="ISE"/>
+                    <Vhdl selection="false" tool="ISE"/>
+                </RTLs>
+            </UIAutoMGImpl>
+        </UIAutoMGConf>
+        <UIAutoSimConf ApIntSupport="true" AskAgain="true">
+            <RTLs>
+                <SystemC selection="true" tool="SystemC"/>
+                <Verilog selection="false" tool="ModelSim"/>
+                <VHDL selection="false" tool="ModelSim"/>
+            </RTLs>
+        </UIAutoSimConf>
+    </UIConfigurations>
+    <name>
+        <value string="virtex6"/>
+    </name>
+    <project>
+        <value string="autopilot"/>
+    </project>
+</solution>
+
